@@ -47,8 +47,12 @@ def build_embed(authorName, authorPicture, embedDesc, embedColor, embedImage):
     messageUrls = find_url(embedDesc)
     if embedImage != "":
         emb.set_image(url=embedImage) 
+        print(authorName + " uploaded an image")
     elif len(messageUrls) > 0:
         emb.set_image(url=messageUrls[0])
+        print(authorName + " linked an image")
+    else:
+        print(authorName + ": " + embedDesc)
     return emb
 
 @botClient.event
