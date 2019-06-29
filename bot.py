@@ -1,5 +1,6 @@
 import discord
 import asyncio
+import re
 
 # This is the token of the user account which has access to the channel where the messages
 # are being mirrored from
@@ -34,11 +35,20 @@ async def on_ready():
     print(botClient.user.id)
     print("-------")
 
-def build_embed(authorName, authorPicture, embedDesc, embedColor):
+def find_url(string):
+    url = re.findall("http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\), ]|(?:%[0-9a-fA-F][0-9a-fA-F]))+", string)
+    return url
+
+def build_embed(authorName, authorPicture, embedDesc, embedColor, embedImage):
     emb = discord.Embed()
     emb.set_author(name=authorName, url="", icon_url=authorPicture)
     emb.description = embedDesc
     emb.color = embedColor
+    messageUrls = find_url(embedDesc)
+    if embedImage != "":
+        emb.set_image(url=embedImage) 
+    elif len(messageUrls) > 0:
+        emb.set_image(url=messageUrls[0])
     return emb
 
 @botClient.event
@@ -50,7 +60,11 @@ async def send_message(messageEmbed):
 async def on_message(message):
     if message.channel.id == int(sourceChannelID):
         authorName = message.author.name + "#" + message.author.discriminator
-        await send_message(build_embed(authorName, message.author.avatar_url, message.clean_content, message.author.color))
+        if len(message.attachments) > 0:
+            imageURL = message.attachments[0].url
+        else:
+            imageURL = ""
+        await send_message(build_embed(authorName, message.author.avatar_url, message.clean_content, message.author.color, imageURL))
 
 loop = asyncio.get_event_loop()
 task1 = loop.create_task(userClient.start(userToken, bot=False))
