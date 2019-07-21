@@ -35,10 +35,12 @@ async def on_ready():
     print(botClient.user.id)
     print("-------")
 
+# Return a string with the url contained in a given string.
 def find_url(string):
     url = re.findall("http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\), ]|(?:%[0-9a-fA-F][0-9a-fA-F]))+", string)
     return url
 
+# Returns a discord.Embed ready to be sent.
 def build_embed(authorName, authorPicture, embedDesc, embedColor, embedImage):
     emb = discord.Embed()
     emb.set_author(name=authorName, url="", icon_url=authorPicture)
@@ -70,6 +72,7 @@ async def on_message(message):
             imageURL = ""
         await send_message(build_embed(authorName, message.author.avatar_url, message.clean_content, message.author.color, imageURL))
 
+# Async loop allows both clients to run simultaneously.
 loop = asyncio.get_event_loop()
 task1 = loop.create_task(userClient.start(userToken, bot=False))
 task2 = loop.create_task(botClient.start(botToken))
