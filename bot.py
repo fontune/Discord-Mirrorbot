@@ -70,7 +70,7 @@ async def on_message(message):
             imageURL = message.attachments[0].url
         else:
             imageURL = ""
-        await send_message(build_embed(authorName, message.author.avatar_url, message.clean_content, message.author.color, imageURL))
+        await send_message(build_embed(authorName, message.author.avatar_url_as(format=None,static_format='png',size=1024), message.clean_content, message.author.color, imageURL))
 
 # Async loop allows both clients to run simultaneously.
 loop = asyncio.get_event_loop()
