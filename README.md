@@ -1,5 +1,7 @@
 # Discord-Mirrorbot
 
+## !!! PLEASE NOTE - I no longer have the time to maintain this project. You are welcome to try to bring it up to date, but there have been changes to the Discord API since this was written so this will no longer work without updating to a newer version of discord.py - Feel free to fork this project 
+
 Discord-Mirrorbot allows for a channel that can be accessed by a user account to be mirrored elsewhere, output by a bot account.
 
 ### Setup
